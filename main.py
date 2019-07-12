@@ -4,9 +4,6 @@ import json, sys, argparse, os
 from DatadogMonitor import DatadogMonitor
 import JenkinsMonitorsParser
 
-
-
-
 def sync_monitor(args):
 	if args['datadog_monitors_root'] is None:
 		print('\n--datadog-monitors-root is not defined')
@@ -14,8 +11,6 @@ def sync_monitor(args):
 
 	all_monitors = JenkinsMonitorsParser.get_all_monitors(args['datadog_monitors_root'])
 	DatadogMonitor.update_monitor(all_monitors)
-
-
 
 def main_program():
 	parser = argparse.ArgumentParser(description='Datadog Monitor Tools')
@@ -26,8 +21,6 @@ def main_program():
 	parser_sync.add_argument('--api-key', default='', help='datadog API key')
 	parser_sync.add_argument('--app-key', default='', help='datadog APP key')
 	parser_sync.set_defaults(func=sync_monitor)
-
-
 	
 	# create the parser for create command
 	parser_deploy = subparsers.add_parser('deploy', help='create a monitor from a json file')	
@@ -35,14 +28,6 @@ def main_program():
 	parser_deploy.add_argument('--api-key', default='', help='datadog API key')
 	parser_deploy.add_argument('--app-key', default='', help='datadog APP key')
 	parser_deploy.set_defaults(func=deploy_monitor)
-			
-	## create parser for delete command
-	parser_delete = subparsers.add_parser('delete', help='delete a monitor by ID')
-	parser_delete.add_argument('monitor_id', help='monitor ID to be deleted', nargs='*')
-	parser_delete.add_argument('--api-key', default='', help='datadog API key')
-	parser_delete.add_argument('--app-key', default='', help='datadog APP key')
-	parser_delete.set_defaults(func=delete_monitor)
-
 
 	# parse argument
 	args = parser.parse_args()
@@ -90,15 +75,6 @@ def deploy_monitor(args):
 			DatadogMonitor.create_monitor(i)
 		else:
 			DatadogMonitor.update_monitor(i)
-
-
-
-# delete a monitor by ID
-def delete_monitor(args):
-	monitor_id = args['monitor_id']
-	DatadogMonitor.delete_monitor(monitor_id)
-
-
 
 if __name__ == '__main__':
 	main_program()

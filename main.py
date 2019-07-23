@@ -34,17 +34,18 @@ def main_program():
 	
 	# Check if valid arguments
 	arguments = vars(args)
+
 	if arguments:
 		if arguments['api_key'] == '':
 			try:
-				arguments['api_key'] = os.environment('DATADOG_API_KEY')
+				arguments['api_key'] = os.environ['DATADOG_API_KEY']
 			except:
 				print('\n--api-key is not defined\n')
 				exit(1)
 
 		if arguments['app_key'] == '':
 			try:
-				arguments['app_key'] = os.environment('DATADOG_APP_KEY')
+				arguments['app_key'] = os.environ['DATADOG_APP_KEY']
 			except:
 				print('\n--app-key is not defined\n')
 				exit(1)
